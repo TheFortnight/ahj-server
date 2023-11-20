@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<title>WS</title>
+<html lang="en">
+    <head>
+
+    </head>
+    <body>
+
+    </body>
+</html>
+
+<script>
+    try {
+        (async function () {
+            const resp = await fetch("http://localhost:3001/", {
+                
+            });
+            const res = await resp.json();
+            console.log(res);
+            document.body = res;
+        })()
+    } catch (e) {
+        console.error(e.message);
+    }
+</script>
