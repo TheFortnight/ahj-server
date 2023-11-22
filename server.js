@@ -4,14 +4,16 @@ const { koaBody } = require('koa-body');
 
 const app = new Koa();
 
-const subscriptions = [];
+let subscriptions = [];
 console.log('TYPE: '+typeof koaBody);
 
 app.use(koaBody({
   urlencoded: true,
+  multipart: true
 }));
 
 app.use((ctx, next) => {
+  
   if (ctx.request.method !== 'OPTIONS') {
     next();
     return;
@@ -19,20 +21,28 @@ app.use((ctx, next) => {
 
   ctx.response.set('Access-Control-Allow-Origin', '*');
   ctx.response.set('Access-Control-Allow-Methods', 'DELETE, PUT, PATCH, POST, GET');
-  ctx.response.status = 204;
+  ctx.response.status = 204;});
 
-});
 
 app.use((ctx, next) => {
-  console.log('ctx.request.body:' + JSON.stringify(ctx.request.body));
+
+  if (ctx.request.method !== 'POST') {
+
+    console.log('NOT POST REQ!');
+
+    next();
+
+    return;
+  }
+
+  console.log('POST: ', ctx.request.body);
 
   ctx.response.set('Access-Control-Allow-Origin', '*');
 
-  const { name, phone } = ctx.request.body;
+  let { name, phone } = ctx.request.body;
 
   if (subscriptions.some(sub => sub.phone === phone)) {
     ctx.response.status = 400;
-
     ctx.response.body = 'subscription exists';
 
     return;
@@ -40,13 +50,40 @@ app.use((ctx, next) => {
   subscriptions.push({ name, phone});
 
   ctx.response.body = 'OK';
+
   next();
+
 });
 
 app.use((ctx, next) => {
-  console.log('2nd middlewear');
-  
-  //next();
+
+  if (ctx.request.method !== 'DELETE') {
+    console.log('NOT DELETE REQ!');
+    next();
+
+    return;
+  }
+
+  console.log('DELETE: ', ctx.request.query);
+
+  ctx.response.set('Access-Control-Allow-Origin', '*');
+
+  let { phone } = ctx.request.query;
+
+  if (subscriptions.every(sub => sub.phone !== phone)) {
+    ctx.response.status = 400;
+    ctx.response.body = 'subscription doesn\'t exists';
+
+    return;
+  }
+
+
+  subscriptions = subscriptions.filter(sub => sub.phone !== phone);
+
+  ctx.response.body = 'Subscription deleted';
+
+  next();
+
 });
 
 const server = http.createServer(app.callback());
