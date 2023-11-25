@@ -23,6 +23,21 @@ app.use((ctx, next) => {
   ctx.response.set('Access-Control-Allow-Methods', 'DELETE, PUT, PATCH, POST, GET');
   ctx.response.status = 204;});
 
+  app.use((ctx, next) => {
+
+    if (ctx.request.method !== 'POST' && ctx.request.url !== '/upload') {
+  
+      next();
+  
+      return;
+    }
+  
+    console.log(ctx.request.files);
+  
+    next();
+  
+  });
+
 
 app.use((ctx, next) => {
 
