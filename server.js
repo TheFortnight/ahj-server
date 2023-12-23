@@ -8,7 +8,7 @@ const uuid = require('uuid');
 const koaStatic = require('koa-static');
 
 let subscriptions = [];
-console.log('TYPE: '+typeof koaBody);
+
 
 // => Static file handling
 const public = path.join(__dirname, '/public');
