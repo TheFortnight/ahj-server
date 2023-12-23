@@ -10,7 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "forever": "^4.0.3"
+    "forever": "^4.0.3",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "koa": "^2.14.2",

@@ -12,6 +12,7 @@ console.log('TYPE: '+typeof koaBody);
 app.use(koaBody({
   urlencoded: true,
   multipart: true
+  multipart: true
 }));
 
 app.use((ctx, next) => {
@@ -105,6 +106,34 @@ app.use((ctx, next) => {
 });*/
 
 app.use((ctx, next) => {
+
+  if (ctx.request.method !== 'DELETE') {
+    console.log('NOT DELETE REQ!');
+    next();
+
+    return;
+  }
+
+  console.log('DELETE: ', ctx.request.query);
+
+  ctx.response.set('Access-Control-Allow-Origin', '*');
+
+  let { phone } = ctx.request.query;
+
+  if (subscriptions.every(sub => sub.phone !== phone)) {
+    ctx.response.status = 400;
+    ctx.response.body = 'subscription doesn\'t exists';
+
+    return;
+  }
+
+
+  subscriptions = subscriptions.filter(sub => sub.phone !== phone);
+
+  ctx.response.body = 'Subscription deleted';
+
+  next();
+
 
   if (ctx.request.method !== 'DELETE') {
     console.log('NOT DELETE REQ!');
