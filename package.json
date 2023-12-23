@@ -16,6 +16,7 @@
   "devDependencies": {
     "koa": "^2.14.2",
     "koa-body": "^6.0.1",
+    "koa-static": "^5.0.0",
     "uuid": "^9.0.1"
   }
 }

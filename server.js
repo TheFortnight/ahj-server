@@ -5,15 +5,20 @@ const app = new Koa();
 const path = require('path');
 const fs = require('fs');
 const uuid = require('uuid');
+const koaStatic = require('koa-static');
 
 let subscriptions = [];
 console.log('TYPE: '+typeof koaBody);
 
+// => Static file handling
+const public = path.join(__dirname, '/public');
+
+app.use(koaStatic(public));
+
 app.use(koaBody({
   urlencoded: true,
   multipart: true
-  multipart: true
-}));
+})); 
 
 app.use((ctx, next) => {
   
@@ -40,8 +45,6 @@ app.use((ctx, next) => {
     let fileName;
 
     try {
-    const public = path.join(__dirname, '/public');
-
     
 
     const { file } = ctx.request.files;
@@ -56,7 +59,7 @@ app.use((ctx, next) => {
 
     fs.copyFileSync(file.filepath, uploadFolder + '/' + file.originalFilename);
 
-    fileName = '/public/' + subfolder + '/' + file.originalFilename;
+    fileName = '/' + subfolder + '/' + file.originalFilename;
     
     ctx.response.body = fileName;
 
@@ -118,7 +121,7 @@ app.use((ctx, next) => {
 
   ctx.response.set('Access-Control-Allow-Origin', '*');
 
-  let { phone } = ctx.request.query;
+  const { phone } = ctx.request.query;
 
   if (subscriptions.every(sub => sub.phone !== phone)) {
     ctx.response.status = 400;
@@ -146,9 +149,9 @@ app.use((ctx, next) => {
 
   ctx.response.set('Access-Control-Allow-Origin', '*');
 
-  let { phone } = ctx.request.query;
+  const { phone1 } = ctx.request.query;
 
-  if (subscriptions.every(sub => sub.phone !== phone)) {
+  if (subscriptions.every(sub => sub.phone !== phone1)) {
     ctx.response.status = 400;
     ctx.response.body = 'subscription doesn\'t exists';
 
@@ -156,7 +159,7 @@ app.use((ctx, next) => {
   }
 
 
-  subscriptions = subscriptions.filter(sub => sub.phone !== phone);
+  subscriptions = subscriptions.filter(sub => sub.phone !== phone1);
 
   ctx.response.body = 'Subscription deleted';
 
