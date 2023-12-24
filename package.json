@@ -4,17 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "forever start rest.js -v",
     "fetch": "node fetch.js",
     "watch": "forever server.js -v"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "forever": "^4.0.3",
+    "koa-combine-routers": "^4.0.2",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "forever-monitor": "^3.0.3",
     "koa": "^2.14.2",
     "koa-body": "^6.0.1",
     "koa-router": "^12.0.1",
