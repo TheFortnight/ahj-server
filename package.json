@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "forever start rest.js -v",
+    "start": "rest.js",
     "fetch": "node fetch.js",
     "watch": "forever server.js -v"
   },
@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "forever-monitor": "^3.0.3",
+    "http-event-stream": "^0.2.0",
     "koa": "^2.14.2",
     "koa-body": "^6.0.1",
     "koa-router": "^12.0.1",

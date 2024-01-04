@@ -42,8 +42,7 @@ app.use(async (ctx, next) => {
     }
 });
 
-// TODO: write code here
-//console.log('ROUTER: ', router.allowedMethods);
+
 app.use(router());
 
 const  port = process.env.PORT || 8181;
