@@ -12,7 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "koa-combine-routers": "^4.0.2",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "ws": "^8.16.0"
   },
   "devDependencies": {
     "forever-monitor": "^3.0.3",
